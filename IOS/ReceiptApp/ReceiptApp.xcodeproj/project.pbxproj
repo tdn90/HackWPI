@@ -18,6 +18,8 @@
 		5666432621F2DB9800E9B7A7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5666432421F2DB9800E9B7A7 /* LaunchScreen.storyboard */; };
 		5666433121F2DB9800E9B7A7 /* ReceiptAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666433021F2DB9800E9B7A7 /* ReceiptAppTests.swift */; };
 		5666433C21F2DB9800E9B7A7 /* ReceiptAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5666433B21F2DB9800E9B7A7 /* ReceiptAppUITests.swift */; };
+		56BB8FDD21F3A23900DE149F /* ReceiptAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BB8FDC21F3A23900DE149F /* ReceiptAddViewController.swift */; };
+		56BB8FDF21F3A29E00DE149F /* ReceiptLineitem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56BB8FDE21F3A29E00DE149F /* ReceiptLineitem.swift */; };
 		F9F3B892FA217B35458657A8 /* Pods_ReceiptAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 345EED28441669D1113BF0D1 /* Pods_ReceiptAppTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,8 @@
 		5666433721F2DB9800E9B7A7 /* ReceiptAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReceiptAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5666433B21F2DB9800E9B7A7 /* ReceiptAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptAppUITests.swift; sourceTree = "<group>"; };
 		5666433D21F2DB9800E9B7A7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		56BB8FDC21F3A23900DE149F /* ReceiptAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptAddViewController.swift; sourceTree = "<group>"; };
+		56BB8FDE21F3A29E00DE149F /* ReceiptLineitem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiptLineitem.swift; sourceTree = "<group>"; };
 		5878ABF061CE2759BAE998A3 /* Pods-ReceiptAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReceiptAppUITests/Pods-ReceiptAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		C4E57807654E463C8E7E8D2A /* Pods-ReceiptAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReceiptAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReceiptAppTests/Pods-ReceiptAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CBFE8655410B31E9273E9597 /* Pods_ReceiptAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReceiptAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +140,8 @@
 				5666432721F2DB9800E9B7A7 /* Info.plist */,
 				564981DC21F312CB0098AFDF /* HomeViewController.swift */,
 				564981DE21F321570098AFDF /* ImagePicker.swift */,
+				56BB8FDC21F3A23900DE149F /* ReceiptAddViewController.swift */,
+				56BB8FDE21F3A29E00DE149F /* ReceiptLineitem.swift */,
 			);
 			path = ReceiptApp;
 			sourceTree = "<group>";
@@ -400,6 +406,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5666431E21F2DB9700E9B7A7 /* ViewController.swift in Sources */,
+				56BB8FDF21F3A29E00DE149F /* ReceiptLineitem.swift in Sources */,
+				56BB8FDD21F3A23900DE149F /* ReceiptAddViewController.swift in Sources */,
 				564981DF21F321570098AFDF /* ImagePicker.swift in Sources */,
 				5666431C21F2DB9700E9B7A7 /* AppDelegate.swift in Sources */,
 				564981DD21F312CB0098AFDF /* HomeViewController.swift in Sources */,

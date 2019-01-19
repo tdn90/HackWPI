@@ -8,11 +8,12 @@
 
 import UIKit
 import Alamofire
+import SwiftyJSON
 
 class HomeViewController: UIViewController, UIImagePickerControllerDelegate,
 UINavigationControllerDelegate {
     
-    
+    var data:JSON?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     override func viewDidLoad() {
@@ -48,7 +49,9 @@ UINavigationControllerDelegate {
                     })
                     
                     upload.responseString { response in
-                        print(response.result.value)
+                        self.data = JSON(parseJSON: response.result.value!)
+                        print(self.data)
+                        self.performSegue(withIdentifier: "receiptaddsegue", sender: self)
                     }
                     
                 case .failure(let encodingError):
@@ -57,6 +60,15 @@ UINavigationControllerDelegate {
             }
         }
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is ReceiptAddViewController
+        {
+            let vc = segue.destination as? ReceiptAddViewController
+            vc?.data = self.data
+        }
     }
 
 
