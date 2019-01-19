@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_085357) do
   create_table "line_item_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "line_item_id", null: false
     t.bigint "user_id", null: false
-    t.integer "status", default: 0, null: false
+    t.integer "integer", default: 0, null: false
     t.index ["line_item_id"], name: "index_line_item_users_on_line_item_id"
     t.index ["user_id"], name: "index_line_item_users_on_user_id"
   end
