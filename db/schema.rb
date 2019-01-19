@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_031908) do
+ActiveRecord::Schema.define(version: 2019_01_19_042206) do
+
+  create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "receipt_id", null: false
+    t.string "item", default: "", null: false
+    t.integer "price", default: 0, null: false
+    t.index ["receipt_id"], name: "index_line_items_on_receipt_id"
+  end
 
   create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", default: "", null: false
@@ -34,5 +41,6 @@ ActiveRecord::Schema.define(version: 2019_01_19_031908) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "line_items", "receipts"
   add_foreign_key "receipts", "users"
 end
