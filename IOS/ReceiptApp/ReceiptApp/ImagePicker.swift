@@ -29,7 +29,7 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
             UIAlertAction in
             self.openCamera()
         }
-        let gallaryAction = UIAlertAction(title: "Gallary", style: .default){
+        let gallaryAction = UIAlertAction(title: "Camera Roll", style: .default){
             UIAlertAction in
             self.openGallery()
         }
@@ -80,7 +80,6 @@ class ImagePickerManager: NSObject, UIImagePickerControllerDelegate, UINavigatio
         }
         pickImageCallback?(image)
     }
-    
     
     
     @objc func imagePickerController(_ picker: UIImagePickerController, pickedImage: UIImage?) {
