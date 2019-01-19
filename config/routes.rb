@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get '/receipts/:id', to: "receipts#index"
 
+  get '/group', to: "group#getGroupOfUser"
+ 
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
 end
