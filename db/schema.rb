@@ -12,21 +12,21 @@
 
 ActiveRecord::Schema.define(version: 2019_01_19_085357) do
 
-  create_table "group_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "group_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.index ["group_id"], name: "index_group_users_on_group_id"
+    t.index ["user_id"], name: "index_group_users_on_user_id"
   end
 
-  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "payperiod_id_id"
     t.bigint "payperiod_id"
     t.index ["payperiod_id"], name: "index_groups_on_payperiod_id"
-    t.index ["payperiod_id_id"], name: "index_groups_on_payperiod_id_id"
     t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
-  create_table "line_item_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "line_item_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "line_item_id", null: false
     t.bigint "user_id", null: false
     t.integer "status", default: 0, null: false
@@ -34,14 +34,14 @@ ActiveRecord::Schema.define(version: 2019_01_19_085357) do
     t.index ["user_id"], name: "index_line_item_users_on_user_id"
   end
 
-  create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "receipt_id", null: false
     t.string "item", default: "", null: false
     t.integer "price", default: 0, null: false
     t.index ["receipt_id"], name: "index_line_items_on_receipt_id"
   end
 
-  create_table "payperiods", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "payperiods", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "start", null: false
     t.datetime "end", null: false
     t.text "resultJson", null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_085357) do
     t.index ["group_id"], name: "index_payperiods_on_group_id"
   end
 
-  create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.text "description"
     t.bigint "user_id", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_085357) do
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2019_01_19_085357) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "group_users", "groups"
+  add_foreign_key "group_users", "users"
   add_foreign_key "groups", "payperiods"
   add_foreign_key "groups", "users"
   add_foreign_key "line_item_users", "line_items"
