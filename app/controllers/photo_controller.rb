@@ -35,7 +35,7 @@ class PhotoController < ApplicationController
             end
         end
 
-        result = result.delete_if{|x| x[0] == " "}
+        result = result.delete_if{|x| x[0] == " " || x[0] == ""}
 
         p result
 
