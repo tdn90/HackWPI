@@ -4,5 +4,5 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :receipts
-  #has_many :line_item_users
+  has_many :line_item_users
 end
