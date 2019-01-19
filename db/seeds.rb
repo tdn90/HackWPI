@@ -8,8 +8,12 @@
 
 user = User.find(1)
 
-group = Group.create(admin: user)
+group = Group.create(admin: user, name: "Test Group")
 group.save!
+group.users << user
+
+group.save!
+
 receipt = Receipt.create(name: 'Day 1', description: "Hello", user: user, group: group)
 receipt.save!
 receipt2 = Receipt.create(name: 'Day 2', description: "Hello2", user: user, group: group)
