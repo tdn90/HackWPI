@@ -15,9 +15,12 @@ UINavigationControllerDelegate {
     
     var data:JSON?
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    @IBOutlet weak var welcomeMessage: UILabel!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        welcomeMessage.text = "Welcome, " + appDelegate.usern! + "!"
         // Do any additional setup after loading the view, typically from a nib.
     }
     @IBAction func Logout(_ sender: Any) {
@@ -49,6 +52,7 @@ UINavigationControllerDelegate {
                     })
                     
                     upload.responseString { response in
+                        print(response.result.value)
                         self.data = JSON(parseJSON: response.result.value!)
                         print(self.data)
                         self.performSegue(withIdentifier: "receiptaddsegue", sender: self)
@@ -71,6 +75,10 @@ UINavigationControllerDelegate {
         }
     }
 
-
+    @IBAction func testload(_ sender: Any) {
+        self.data = JSON(parseJSON: "{\"status\":\"OK\",\"result\":[[\"P GARLIC BREAD\",\"2.50\"],[\"RENCH BREAD\",\"2.49\"],[\"RONZ THIN SPAGHETT\",\"1.00\"],[\"RONZ THIN SPAGHETT\",\"1.00\"],[\"RONZ THIN SPAGHETT\",\"1.00\"],[\"RONZ THIN SPAGHETT\",\"1.00\"],[\"SUNNY D ORIG 18PK\",\"5.99\"]]}")
+        self.performSegue(withIdentifier: "receiptaddsegue", sender: self)
+    }
+    
 }
 
