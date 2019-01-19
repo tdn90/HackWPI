@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_215556) do
+ActiveRecord::Schema.define(version: 2019_01_19_231419) do
 
   create_table "assigntables", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "lineItem_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_215556) do
     t.datetime "start", null: false
     t.datetime "end", null: false
     t.text "resultJson", null: false
-    t.boolean "boolean", null: false
+    t.boolean "archived", null: false
     t.bigint "group_id", null: false
     t.index ["group_id"], name: "index_payperiods_on_group_id"
   end
