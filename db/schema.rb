@@ -10,10 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_081406) do
+ActiveRecord::Schema.define(version: 2019_01_19_082615) do
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "user_id", null: false
+    t.bigint "payperiod_id_id"
+    t.bigint "payperiod_id"
+    t.index ["payperiod_id"], name: "index_groups_on_payperiod_id"
+    t.index ["payperiod_id_id"], name: "index_groups_on_payperiod_id_id"
     t.index ["user_id"], name: "index_groups_on_user_id"
   end
 
@@ -30,6 +34,15 @@ ActiveRecord::Schema.define(version: 2019_01_19_081406) do
     t.string "item", default: "", null: false
     t.integer "price", default: 0, null: false
     t.index ["receipt_id"], name: "index_line_items_on_receipt_id"
+  end
+
+  create_table "payperiods", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.datetime "start", null: false
+    t.datetime "end", null: false
+    t.text "resultJson", null: false
+    t.boolean "boolean", null: false
+    t.bigint "group_id", null: false
+    t.index ["group_id"], name: "index_payperiods_on_group_id"
   end
 
   create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -56,9 +69,11 @@ ActiveRecord::Schema.define(version: 2019_01_19_081406) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "groups", "payperiods"
   add_foreign_key "groups", "users"
   add_foreign_key "line_item_users", "line_items"
   add_foreign_key "line_item_users", "users"
   add_foreign_key "line_items", "receipts"
+  add_foreign_key "payperiods", "groups"
   add_foreign_key "receipts", "users"
 end
