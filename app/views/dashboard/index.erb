@@ -1,0 +1,12 @@
+<% if user_signed_in? %>
+    <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+    Hello, <%=current_user.name%>
+    <ul>
+    <%current_user.receipts.each { |receipt| %>
+        <li>Owner: <%=receipt.user.name%></li>
+        <li>Receipt Title: <%=receipt.name%></li>
+        <li>Receipt Description: <%=receipt.description%></li>
+        
+    <%}%>
+    </ul>
+<% end %>
