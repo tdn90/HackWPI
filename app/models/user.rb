@@ -7,5 +7,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many :receipts
-  has_many :line_item_users
+  has_and_belongs_to_many :groups
+  has_many :assigntables
+  has_many :lineItems, through: :assigntables
+  #has_many :line_item_users
+  #belongs_to :group
+  #has_many :groups
 end
