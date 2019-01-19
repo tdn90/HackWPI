@@ -10,9 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_052131) do
+ActiveRecord::Schema.define(version: 2019_01_19_081406) do
 
-  create_table "line_item_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_groups_on_user_id"
+  end
+
+  create_table "line_item_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "line_item_id", null: false
     t.bigint "user_id", null: false
     t.integer "integer", default: 0, null: false
@@ -20,14 +25,14 @@ ActiveRecord::Schema.define(version: 2019_01_19_052131) do
     t.index ["user_id"], name: "index_line_item_users_on_user_id"
   end
 
-  create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "line_items", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "receipt_id", null: false
     t.string "item", default: "", null: false
     t.integer "price", default: 0, null: false
     t.index ["receipt_id"], name: "index_line_items_on_receipt_id"
   end
 
-  create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "receipts", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.text "description"
     t.bigint "user_id", null: false
@@ -36,7 +41,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_052131) do
     t.index ["user_id"], name: "index_receipts_on_user_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -51,6 +56,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_052131) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "groups", "users"
   add_foreign_key "line_item_users", "line_items"
   add_foreign_key "line_item_users", "users"
   add_foreign_key "line_items", "receipts"
