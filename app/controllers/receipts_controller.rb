@@ -33,4 +33,15 @@ class ReceiptsController < ApplicationController
 
         render json: {"status": "OK"}
     end 
+
+    def edit()
+        recpt = Receipt.find(params[:id])
+        
+        if current_user != recpt.user
+            render plain: "Unauthorized", status: :forbidden
+            return
+        end
+        # stub
+        render :edit, locals: {:edit=> true, :receipt => recpt}
+    end
 end

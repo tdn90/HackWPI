@@ -1,4 +1,4 @@
-<h2 style="font-variant: small-caps; font-weight:bold">Welcome, <%=current_user.name%> </h2>
+<h1 style="font-variant: small-caps; font-weight:bold">Welcome, <%=current_user.name%> </h1>
 <br /><br />
 <div class="row">
     <div class="col-sm">
@@ -17,7 +17,7 @@
         <br />
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title" >Outstanding Approvals</h5>
+                <h5 class="card-title" >Approval Queue</h5>
                 <div class="card-body">
                     <table class="table">
                         <tr><th>Item</th><th>Receipt</th><th>Owner</th></tr>
@@ -26,7 +26,7 @@
                         if (arow.status != 1)
                             ct = ct + 1
                             if(ct < 10)%>
-                                <tr><td><%=arow.line_item.item%></td><td><%=arow.line_item.receipt.name%></td><td><%=arow.line_item.receipt.user.name%></td>
+                                <tr><td><%=arow.line_item.item%></td><td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td><td><%=arow.line_item.receipt.user.name%></td>
                             <%end
                         end
                     }%>
@@ -35,7 +35,7 @@
                         <p>... and <%=ct-10%> more.</p>
                     <%end%>
                 </div>
-                <a class="btn btn-primary" href="#">Manage Approvals</a>
+                <a class="btn btn-primary" href="/dashboard/approvals">Manage Approvals</a>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
                         </tr>
                         <%current_user.receipts.each{|receipt|%>
                         <tr>
-                            <td><a href="/receipts/<%=receipt.id%>"><%=receipt.name%></a></td><td>
+                            <td><a href="/receipts/<%=receipt.id%>/edit"><%=receipt.name%></a></td><td>
                             <%approved=0
                             denied=0
                             unapproved=0
@@ -67,7 +67,7 @@
                                         unapproved = unapproved + 1
                                     end
                             }}%>
-                            <%=approved%>/<%=denied%>/<%=unapproved%>
+                            <span class="text-success"><%=approved%></span> / <span class="text-danger"><%=denied%></span> / <%=unapproved%>
                             </td>
                         </tr>
                         <%}%>

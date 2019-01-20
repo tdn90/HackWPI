@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   get '/receipts/:id', to: "receipts#index"
 
+  get '/receipts/:id/edit', to: "receipts#edit"
+
   post '/receipts/create', to: "receipts#createReceipt"
 
   get '/api/v1/listgroup', to: "group#getGroupOfUser"
@@ -24,4 +26,12 @@ Rails.application.routes.draw do
 
   post 'group/leave', to: 'group#leaveGroup'
 
+  get '/dashboard/approvals', to: 'dashboard#approval'
+
+  post '/dashboard/approvals/approve/:id', to: 'dashboard#approve'
+
+  post '/dashboard/approvals/approveall', to: 'dashboard#approveAll'
+
+  post '/dashboard/approvals/reject/:id', to: 'dashboard#reject'
+  
 end

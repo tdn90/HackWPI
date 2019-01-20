@@ -1,0 +1,45 @@
+<h1 style="font-variant: small-caps; font-weight:bold">New Approvals</h1>
+
+<table class="table">
+    <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th><%=link_to "Accept All", "/dashboard/approvals/approveall", { :method => :post, :class=>"btn btn-success btn-block" }%></th></tr>
+<% Assigntable.where("user_id = #{current_user.id} and (status is NULL or status = 0)").find_each{ |arow| %>
+    <tr>
+        <td><%=arow.line_item.item%></td>
+        <td>$<%=arow.line_item.price%></td>
+        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
+        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
+        <td><%=arow.line_item.receipt.user.name%></td>
+        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-success btn-block" }%><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+<%}%>
+</table>
+
+
+<h1 style="font-variant: small-caps; font-weight:bold" class="text-danger">Rejected Approvals</h1>
+
+<table class="table">
+    <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th></th></tr>
+<% Assigntable.where("user_id = #{current_user.id} and status = 2").find_each{ |arow| %>
+    <tr>
+        <td><%=arow.line_item.item%></td>
+        <td>$<%=arow.line_item.price%></td>
+        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
+        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
+        <td><%=arow.line_item.receipt.user.name%></td>
+        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-success btn-block" }%></td>
+<%}%>
+</table>
+
+<h1 style="font-variant: small-caps; font-weight:bold" class="text-success">Accepted Approvals</h1>
+
+<table class="table">
+    <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th></th></tr>
+<% Assigntable.where("user_id = #{current_user.id} and status = 1").find_each{ |arow| %>
+    <tr>
+        <td><%=arow.line_item.item%></td>
+        <td>$<%=arow.line_item.price%></td>
+        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
+        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
+        <td><%=arow.line_item.receipt.user.name%></td>
+        <td><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+<%}%>
+</table>

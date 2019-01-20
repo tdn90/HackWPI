@@ -1,0 +1,184 @@
+
+<%if !edit %>
+<h1>Receipt Adding Wizard</h1>
+<%else%>
+<h1>Receipt Editing Wizard</h1>
+<%end%>
+<form class="needs-validation" novalidate action="javascript:submit();">
+<input type="text" class="form-control" id="store" placeholder="Store Name" required/>
+<div class="invalid-feedback">
+    Please provide a store name.
+</div>
+<br />
+<textarea rows="5" class="form-control" id="desc" placeholder="Optional Description"></textarea>
+<br /><br />
+<h3>Line Items</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Item Name</th>
+            <th scope="col">Item Price</th>
+            <%receipt.group.users.each{ |user|%>
+
+            <th scope="col" style="max-width:80px; height:auto;">
+                <div style="transform: rotate(-00deg);padding:2px;"><%=user.name%></div>
+                <button type="button" class="btn btn-sm btn-success btn-block" style="margin-top:10px" onclick="colSel(<%=user.id%>, true)">All</button>
+                <button type="button" class="btn btn-sm btn-block" onclick="colSel(<%=user.id%>, false)">None</button>
+            </th>
+            <%}%>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody id="lineitems">
+        <tr v-for="(line, lindex) in lines">
+            <td>
+                <input class="form-control" type="text" placeholder="Item Name" style="min-width:250px;" v-model="lines[lindex].desc" required/>
+                <div class="invalid-feedback">
+                    Please enter a line item name.
+                </div>
+            </td>
+            <td><div class="input-group" style="min-width:150px;">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                </div>
+                <input class="form-control" type="number" step="0.01" min="0" placeholder="Item Price" v-model="lines[lindex].price" required/>
+                <div class="invalid-feedback">
+                    Please add a price (positive number with 0-2 decimal places)
+                </div>
+            </div>
+            </td>
+            <td v-for="(person, pindex) in line.people" :style="(line.id!=null) ? ((line.people_approv[pindex] == 1) ? 'background-color:#afffa8' : ((line.people_approv[pindex] == 0) ? 'background-color:#FFFF66' : 'background-color:#ffa8a8')) : ''"><input type="checkbox" v-model="lines[lindex].people[pindex]"/></td>
+            <td><div style="min-width:91px">
+                <button type="button" class="btn btn-sm btn-success" v-on:click="linesel(lindex, true)">All</button>
+                <button type="button" class="btn btn-sm" v-on:click="linesel(lindex, false)">None</button>
+                <button type="button" class="btn btn-sm btn-danger btn-block" style="margin-top:4px;" v-on:click="delrow(lindex)" :disabled="(lines.length <= 1) ? true : false">Delete</button>
+            </td></div>
+        </tr>
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary" onclick="newRow()">Add row</button>
+<hr />
+<input type="submit" class="btn btn-success"/> <a href="/dashboard/receipts" class="btn btn-danger">Cancel</a>
+<form>
+<script type="text/javascript">
+
+//Bootstrap validation
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+
+var default_line = { 
+    desc: "",
+    id: null,
+    price: null,
+    people: {
+        <%receipt.group.users.each{ |user|%>
+        <%=user.id%>: false,
+        <%}%>
+    },
+    people_approv: {
+        <%receipt.group.users.each{ |user|%>
+        <%=user.id%>: false,
+        <%}%>
+    }
+}
+var lineitems = new Vue({
+    el: '#lineitems',
+    data: {
+        lines: []
+    },
+    methods: {
+        linesel: function(row, val) {
+            for (p in this.lines[row].people) {
+                this.lines[row].people[p]=val
+            }
+        },
+        colsel: function (p, val) {
+            for (l in this.lines) {
+                this.lines[l].people[p]=val
+            }
+        },
+        delrow: function (row) {
+            this.lines.splice(row,1)
+        }
+    }
+})
+function newRow() {
+    lineitems.lines.push(JSON.parse(JSON.stringify(default_line)))
+}
+function colSel(userid, val) {
+    lineitems.colsel(userid, val)
+}
+function submit() {
+    var store = $("#store").val()
+    var desc = $("#desc").val()
+
+    /*$.ajax({
+        type: "POST",
+        url: "",
+        data: {
+            store: store,
+            desc: desc,
+            lines: lineitems.lines
+        },
+        success: function(data) {
+            // POST was successful - do something with the response
+            //alert('Server sent back: ' + data);
+            window.location.href="/dashboard/receipts"
+        },
+        error: function(data) {
+            // Server error, e.g. 404, 500, error
+            alert(data.responseText);
+        }
+        });*/
+        console.log(JSON.stringify({
+            store: store,
+            desc: desc,
+            lines: lineitems.lines
+        }))
+}
+
+<%if edit %>
+    //=============================//
+    /* Injected by Ruby for loading data */
+    $("#store").val("<%=receipt.name%>")
+    $("#desc").val("<%=receipt.description%>")
+
+    var ln;
+<%
+    receipt.line_items.each { |item| 
+%>
+        ln = JSON.parse(JSON.stringify(default_line))
+        ln.desc = "<%=item.item%>"
+        ln.price = <%=item.price%>
+        ln.id = <%=item.id%>
+        lineitems.lines.push(ln)
+<% 
+        Assigntable.where("line_item_id = #{item.id}").find_each{ |arow| 
+            puts arow.inspect%>
+            ln.people[<%=arow.user.id%>] = true
+            ln.people_approv[<%=arow.user.id%>] = <%= ((arow.status != nil)? arow.status : 0) %>
+<%
+        }
+    }
+%>
+    //=============================//
+<%
+else%>
+newRow()
+<%end%>
+</script>
