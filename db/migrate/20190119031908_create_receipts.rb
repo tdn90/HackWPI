@@ -4,7 +4,7 @@ class CreateReceipts < ActiveRecord::Migration[5.2]
       t.string :name,      null: false, default: ""
       t.text   :description
 
-      t.references :user, index: true, null: false, foreign_key: true
+      t.references :user, index: true, null: false, foreign_key: {on_delete: :cascade}
       t.boolean :paid, null: false, default: false;
       t.datetime :created_at
     end

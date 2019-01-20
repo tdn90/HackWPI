@@ -18,10 +18,10 @@ Rails.application.routes.draw do
 
   post '/group/create', to: 'group#createGroup'
 
+  post '/group/add', to: 'group#addUsers'
   # need item id + groupID
   post '/group/attachGroupWithItem', to: 'group#attachGroupWithItem'
 
-  post '/group/add', to: 'group#addUsers'
 
   post '/group/leave', to: 'group#leaveGroup'
 

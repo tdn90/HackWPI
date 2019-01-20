@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_231419) do
   add_foreign_key "groups", "users", column: "admin_id"
   add_foreign_key "line_items", "receipts"
   add_foreign_key "payperiods", "groups"
-  add_foreign_key "receipts", "groups"
-  add_foreign_key "receipts", "payperiods"
+  add_foreign_key "receipts", "groups", on_delete: :cascade
+  add_foreign_key "receipts", "payperiods", on_delete: :cascade
   add_foreign_key "receipts", "users"
 end

@@ -46,6 +46,23 @@ class GroupController < ApplicationController
         render plain: ""
     end
 
+
+    def addUsers()
+        listID = JSON.parse(params[:lst_usersID])
+        group_id = params[:groupID]
+
+        puts(listID.class)
+        puts(group_id)
+
+        group = Group.find(group_id)
+
+        for userID in listID
+            group.users << User.find(userID)
+        end
+        
+        render plain: ""
+    end
+
     def attachGroupWithItem() 
         groupID = params[:group_id]
         itemID = params[:item_id]
@@ -53,10 +70,10 @@ class GroupController < ApplicationController
         @users.each { |user| puts("Name: ", user.name, ";ID: ", user.id) }
 
         @lineItem = LineItem.find(itemID)
-        @lineItem.users = @users
+        @users.each { |user| Assigntable.create(line_item_id: itemID, user: user, status: 0).save!}
 
-        @lineItem.each { |lineItem| puts("Item: ", lineItem.item, ";price: ", lineItem.price) }
-        render :json => "200 Success", :status => 200
+        #@lineItem.each { |lineItem| puts("Item: ", lineItem.item, ";price: ", lineItem.price) }
+        render plain: ""
     end
 
     def addUsers()
@@ -100,5 +117,4 @@ class GroupController < ApplicationController
         puts(GroupUser.where(user_id: userID).delete_all)
        
     end
-
 end
