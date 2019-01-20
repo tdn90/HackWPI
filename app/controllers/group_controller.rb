@@ -38,7 +38,7 @@ class GroupController < ApplicationController
             }
             @group.payperiods.each { |period| period.destroy }
             @group.destroy
-            redirect_to "/dashboard/groups/"
+            redirect_to "/dashboard/groups"
         end
     end
 
@@ -65,11 +65,11 @@ class GroupController < ApplicationController
         end
 
         # Create payperiod
-        pp = Payperiod.create(start: startday, end: endday, archived: 1, group_id: groupID)
+        pp = Payperiod.create(start: startday, end: endday, archived: 1, group_id: groupID, resultJson: "null")
         pp.save!
 
         # Set payperiod_id for group
-        grp.payperiod_id = pp.id
+        grp.payperiod = pp
         grp.save!
 
         redirect_to "/dashboard/groups"
