@@ -1,12 +1,29 @@
-<% if user_signed_in? %>
-    <%= link_to "Log out", destroy_user_session_path, method: :delete %>
-    Hello, <%=current_user.name%>
-    <ul>
-    <%current_user.receipts.each { |receipt| %>
-        <li>Owner: <%=receipt.user.name%></li>
-        <li>Receipt Title: <%=receipt.name%></li>
-        <li>Receipt Description: <%=receipt.description%></li>
-        
-    <%}%>
-    </ul>
-<% end %>
+
+
+    <nav>
+        <div id="signout">
+            <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+        </div>
+    </nav>
+
+    <h1>Hello,
+        <%=current_user.name%>
+    </h1>
+
+    <div id="user_receipt">
+        <%current_user.receipts.each { |receipt| %>
+        <div>
+            <h3>
+                <bold>Name:</bold>
+                <%= receipt.name %>
+            </h3>
+            <p>
+                <bold>Description:</bold>
+                <%= receipt.description %>
+            </p>
+            <a type="button" class="btn btn-primary" href="../receipts/<%= receipt.id %>">
+                Details
+            </a>
+        </div>
+        <%}%>
+    </div>
