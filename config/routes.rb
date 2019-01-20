@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   post '/receipts/create', to: "receipts#createReceipt"
 
   get '/api/v1/listgroup', to: "group#getGroupOfUser"
+
+  delete '/api/v1/delgroup/:id', to: "group#delGroup" #incomplete
  
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
