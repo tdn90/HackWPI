@@ -10,8 +10,9 @@ Rails.application.routes.draw do
 
   post '/receipts/create', to: "receipts#createReceipt"
 
-  get '/api/v1/listgroup', to: "group#getGroupOfUser"
+  get '/group', to: "group#getGroupOfUser"
  
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
+  post '/group/create', to: 'group#createGroup'
 end
