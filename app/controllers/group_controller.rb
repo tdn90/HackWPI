@@ -15,13 +15,26 @@ class GroupController < ApplicationController
 
 
     def delGroup() 
-        @group = Group.find(params[:id])
-        puts("Name: ", @group.name, ".\nID: ", @group.id)
+        @group = nil 
+        begin
+            @group = Group.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+            @group = nil
+            #render :json => "403 Group not found", :status => 403
+        end
+        #puts("Name: ", @group.name, ".\nID: ", @group.id)
         if @group == nil
             render :json => "403 Group not found", :status => 403
         else 
             puts(@group.destroy)
-            redirect_to "/dashboard/groups"
+            @group.receipts.each { |receipt|
+                receipt.line_items.each { |item| 
+                    item.destroy
+                }
+                receipt.destroy
+            }
+            @group.destroy
+            render :json => "200 Success", :status => 200
         end
     end
 

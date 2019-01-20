@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   get '/dashboard/groups', to: 'group#index'
 
   get '/dashboard/groups/admin/:id', to: 'group#admin'
+  
+  get '/payperiod/checkApproval', to: 'pay_period#checkApproval'
 
   get '/dashboard/groups/info/:id', to: 'group#info'
 end

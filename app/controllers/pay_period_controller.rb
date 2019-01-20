@@ -9,4 +9,7 @@ class PayPeriodController < ApplicationController
         render plain: ""
     end
 
+    def checkApproval() 
+
+    end
 end
