@@ -29,6 +29,9 @@ class GroupController < ApplicationController
             puts(@group.destroy)
             @group.receipts.each { |receipt|
                 receipt.line_items.each { |item| 
+                    item.assigntables.each{ |entry| 
+                        entry.destroy
+                    }
                     item.destroy
                 }
                 receipt.destroy

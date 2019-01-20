@@ -10,6 +10,7 @@ class PayPeriodController < ApplicationController
     end
 
     def checkApproval() 
-
+        periodID = params[:id]
+        period 
     end
 end
