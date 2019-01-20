@@ -33,4 +33,12 @@ class ReceiptsController < ApplicationController
 
         render json: {"status": "OK"}
     end 
+
+    def deleteReceipt()
+        receiptID = params[:receipt_id]
+        LineItem.where(receipt_id: receiptID).delete_all
+        Receipt.where(id: receiptID).delete_all
+    
+        render json: {"status": "OK"}
+    end
 end

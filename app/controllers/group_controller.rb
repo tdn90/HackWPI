@@ -74,4 +74,31 @@ class GroupController < ApplicationController
         
         render plain: ""
     end
+
+    def leaveGroup()
+        userID = current_user.id
+        groupID = params[:group_id]
+
+        # List of line items ID
+        lid = Assigntable.where(user_id: userID).select("line_item_id")
+        
+        for item_id in lid
+            rec_id = LineItem.where(id: item_id).select("receipt_id")
+            if(Receipt.where(id: rec_id).select("group_id") == groupID)
+                Assigntable.where(line_item_id: item_id).delete_all
+            end
+        end
+
+        # Delete items from user's receipts
+        for rid in Receipt.where(user_id: userID).ids
+            LineItem.where(receipt_id: rid).delete_all
+        end
+
+        # Delete all receipts that user create
+        Receipt.where(user_id: userID).delete_all
+
+        puts(GroupUser.where(user_id: userID).delete_all)
+       
+    end
+
 end

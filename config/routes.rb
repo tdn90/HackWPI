@@ -24,4 +24,6 @@ Rails.application.routes.draw do
   post '/group/add', to: 'group#addUsers'
 
   post '/group/leave', to: 'group#leaveGroup'
+
+  post '/receipts/delete', to: 'receipts#deleteReceipt'
 end
