@@ -9,7 +9,7 @@
                     <% grct = 0
                     Group.where("admin_id = #{current_user.id}").each{ | group|
                     grct = grct + 1%>
-                        <%=group.name%><br />
+                        <a href="groups/admin/<%=group.id%>"><%=group.name%></a><br />
                     <%}%>
                     <%if (grct == 0) %>
                         <p>You aren't the leader of any group.</p>
@@ -27,7 +27,7 @@
                     <%grct = 0
                     GroupUser.where("user_id = #{current_user.id}").each{ | groupuser|
                     grct = grct + 1%>
-                        <%=groupuser.group.name%><br />
+                        <a href="groups/info/<%=groupuser.group.id%>"><%=groupuser.group.name%></a><br />
                     <%}%>
                     <%if (grct == 0) %>
                         <p>You aren't a member of any group.</p>

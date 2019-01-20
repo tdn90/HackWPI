@@ -49,7 +49,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-                  <a class="dropdown-item" href="#">Memberships</a>
+                  <a class="dropdown-item" href="/dashboard/groups">Memberships</a>
                   <%= link_to "Account Settings", edit_user_registration_path, method: :get, class: "dropdown-item" %>
                 </div>
               </li>

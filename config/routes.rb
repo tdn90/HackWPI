@@ -20,13 +20,15 @@ Rails.application.routes.draw do
 
   post '/group/create', to: 'group#createGroup'
 
-  post '/group/add', to: 'group#addUsers'
+  post '/group/add', to: 'group#addUser'
   # need item id + groupID
   post '/group/attachGroupWithItem', to: 'group#attachGroupWithItem'
 
   post '/receipts/delete', to: 'receipts#deleteReceipt'
 
   post 'group/leave', to: 'group#leaveGroup'
+
+  post 'group/kick', to: 'group#kickGroup'
 
   get '/dashboard/approvals', to: 'dashboard#approval'
 
@@ -41,4 +43,8 @@ Rails.application.routes.draw do
   post '/pay_period/create', to: 'pay_period#create_pay_period'
 
   get '/dashboard/groups', to: 'group#index'
+
+  get '/dashboard/groups/admin/:id', to: 'group#admin'
+
+  get '/dashboard/groups/info/:id', to: 'group#info'
 end
