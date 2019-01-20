@@ -34,7 +34,7 @@ class GroupController < ApplicationController
                 receipt.destroy
             }
             @group.destroy
-            render :json => "200 Success", :status => 200
+            redirect_to "/dashboard/groups/"
         end
     end
 
