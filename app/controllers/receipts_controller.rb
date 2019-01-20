@@ -15,16 +15,16 @@ class ReceiptsController < ApplicationController
         description = params[:description]
         user_id = current_user.id
         group_id = params[:groupID]
-        # line_items = params[:lineItems]
+        group = Group.find(group_id)
+        line_items = params[:lineItems]
 
-        Receipt.new(:name => name, :description => description, :user_id => user_id, :group_id => group_id)
+        receipt = Receipt.create(name: name, description: description, user: current_user, group: group)
+        receipt.save!
 
-        # for item in line_items
-        #     LineItems.new(:item => item.item, :price => item.price, :receipt =>item.receipt.id).save
-        puts("Name: ", name)
-        puts("Desc: ", description)
-        puts("UserID: ", user_id)
-        puts("GroupID: ", group_id)
+        for item in JSON.parse(line_items)
+            LineItem.create(receipt_id: receipt.id, item: item['item'], price: item['price']).save!
+        end
+
         render plain: ""
     end 
 end
