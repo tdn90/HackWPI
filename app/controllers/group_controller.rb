@@ -13,6 +13,7 @@ class GroupController < ApplicationController
         render json: groups_json
     end
 
+
     def delGroup() 
         @group = Group.find(params[:id])
         puts("Name: ", @group.name, ".\nID: ", @group.id)
@@ -22,6 +23,27 @@ class GroupController < ApplicationController
             puts(@group.destroy)
             render :json => "200 Success", :status => 200
         end
+    end
+
+
+    def createGroup()
+        admin_id = current_user.id
+        payperiod_start = params[:start].to_datetime
+        payperiod_end = params[:end].to_datetime
+        name = params[:name]
+
+        puts(admin_id)
+        puts(payperiod_start.class)
+        puts(payperiod_end.class)
+        puts(name)
+
+        grp = Group.create(admin_id: admin_id, name: name)
+        grp.save!
+        puts(grp.id)
+        Payperiod.create(start: payperiod_start, end: payperiod_end, group_id: grp.id).save!
+        
+
+        render plain: ""
     end
 
 end

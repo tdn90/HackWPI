@@ -12,8 +12,9 @@ Rails.application.routes.draw do
 
   get '/api/v1/listgroup', to: "group#getGroupOfUser"
 
-  delete '/api/v1/delgroup/:id', to: "group#delGroup" #incomplete
+  delete '/api/v1/delgroup/:id', to: "group#delGroup" #incomplete  
  
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
+  post '/group/create', to: 'group#createGroup'
 end

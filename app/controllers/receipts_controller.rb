@@ -22,9 +22,11 @@ class ReceiptsController < ApplicationController
         receipt.save!
 
         for item in JSON.parse(line_items)
-            LineItem.create(receipt_id: receipt.id, item: item['item'], price: item['price']).save!
+            li = LineItem.create(receipt_id: receipt.id, item: item[0], price: item[1])
+            group.users.each{ | user | li.users << user }
+            li.save!
         end
 
-        render plain: ""
+        render json: {"status": "OK"}
     end 
 end

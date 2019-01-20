@@ -143,12 +143,34 @@ class ReceiptAddViewController : UIViewController, UITableViewDelegate, UITableV
         var ok = true
         for tr:ReceiptLineitem in self.tbleView!.visibleCells as! [ReceiptLineitem] {
             if (tr.name.text! == "" || tr.price.text == nil || tr.price.text! == "" || !isDouble(s: tr.price.text!) || self.name.text! == "")  {
-                let alert = UIAlertController(title: "Validation Error", message: "Please fill out all form fields.", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: nil))
-                
-                self.present(alert, animated: true)
+                ok = false
+                break
             }
+        }
+        if (groups.count == 0) {
+            ok = false
+        }
+        if (ok) {
+            Alamofire.request(appDelegate.url + "/receipts/create", method: .post, parameters: ["user_email": appDelegate.email!, "user_token": appDelegate.token!, "lineItems": data!.dictionary!["result"]!.rawString()!, "groupID":  Array(groups.keys)[picker.selectedRow(inComponent: 0)], "description":"", "name":self.name.text!]).responseString { response in
+                if let result = response.result.value {
+                    print(result)
+                    let json = JSON(parseJSON: result)
+                    if (json["status"].string != nil && json["status"].string! == "OK") {
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    print(json)
+                } else {
+                    let alert = UIAlertController(title: "Error", message: "That didn't work", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                }
+            }
+        } else {
+            let alert = UIAlertController(title: "Validation Error", message: "Please fill out all form fields.", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: nil))
+            
+            self.present(alert, animated: true)
         }
     }
 }

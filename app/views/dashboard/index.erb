@@ -1,11 +1,4 @@
-
-
-    <nav>
-        <div id="signout">
-            <%= link_to "Log out", destroy_user_session_path, method: :delete %>
-        </div>
-    </nav>
-
+<h2 style="font-variant: small-caps; font-weight:bold">Welcome, <%=current_user.name%> </h2>
     <h1>Hello,
         <%=current_user.name%>
     </h1>
