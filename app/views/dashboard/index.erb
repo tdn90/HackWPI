@@ -1,24 +1,81 @@
 <h2 style="font-variant: small-caps; font-weight:bold">Welcome, <%=current_user.name%> </h2>
-    <h1>Hello,
-        <%=current_user.name%>
-    </h1>
-
-    <a href=""></a>
-
-    <div id="user_receipt">
-        <%current_user.receipts.each { |receipt| %>
-        <div>
-            <h3>
-                <bold>Name:</bold>
-                <%= receipt.name %>
-            </h3>
-            <p>
-                <bold>Description:</bold>
-                <%= receipt.description %>
-            </p>
-            <a type="button" class="btn btn-primary" href="../receipts/<%= receipt.id %>">
-                Details
-            </a>
+<br /><br />
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >This Pay Period</h5>
+                <div class="card-body">
+                    <ul>
+                        <%current_user.groups.each{|group|%>
+                        <li><strong><%=group.name%></strong>: Ends XXXXX</li>
+                        <%}%>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <%}%>
+        <br />
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >Outstanding Approvals</h5>
+                <div class="card-body">
+                    <table class="table">
+                        <tr><th>Item</th><th>Receipt</th><th>Owner</th></tr>
+                    <%ct = 0
+                    Assigntable.where("user_id = #{current_user.id}").find_each{ |arow| 
+                        if (arow.status != 1)
+                            ct = ct + 1
+                            if(ct < 10)%>
+                                <tr><td><%=arow.line_item.item%></td><td><%=arow.line_item.receipt.name%></td><td><%=arow.line_item.receipt.user.name%></td>
+                            <%end
+                        end
+                    }%>
+                    </table>
+                    <%if (ct > 5)%>
+                        <p>... and <%=ct-10%> more.</p>
+                    <%end%>
+                </div>
+                <a class="btn btn-primary" href="#">Manage Approvals</a>
+            </div>
+        </div>
     </div>
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >Your Receipts</h5>
+                <div class="card-body">
+                    <p>Click a receipt to edit</p>
+                    <table class="table">
+                        <tr>
+                            <th>Receipt Name</th><th>Status (Approved/Denied/Unapproved)</th>
+                        </tr>
+                        <%current_user.receipts.each{|receipt|%>
+                        <tr>
+                            <td><a href="/receipts/<%=receipt.id%>"><%=receipt.name%></a></td><td>
+                            <%approved=0
+                            denied=0
+                            unapproved=0
+                            total=0
+                            receipt.line_items.each{ | line_item | 
+                                line_item.users.select('users.*, assigntables.status').each { | user |
+                                    total = total + 1
+                                    if user.status == 1
+                                        approved = approved + 1
+                                    elsif user.status == 2
+                                        denied = denied + 1
+                                    else
+                                        unapproved = unapproved + 1
+                                    end
+                            }}%>
+                            <%=approved%>/<%=denied%>/<%=unapproved%>
+                            </td>
+                        </tr>
+                        <%}%>
+                    </table>
+                </div>
+                <a class="btn btn-primary" href="#">New</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />

@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(version: 2019_01_19_231419) do
   create_table "payperiods", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.datetime "start", null: false
     t.datetime "end", null: false
-    t.text "resultJson"
-    t.boolean "archived", default: false, null: false
+    t.text "resultJson", null: false
+    t.boolean "archived", null: false
     t.bigint "group_id", null: false
     t.index ["group_id"], name: "index_payperiods_on_group_id"
   end
