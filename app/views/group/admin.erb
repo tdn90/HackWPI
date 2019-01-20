@@ -1,0 +1,20 @@
+<h1 style="font-variant: small-caps; font-weight:bold">Group Administration: <%=group.name%></h1>
+<br /><br />
+<h3>Members:</h3>
+<table class="table">
+    <tr><th>Name</th><th>Email</th><th></th></tr>
+<%group.users.each{ | user | %>
+    <tr><td><%=user.name%></td><td><%=user.email%></td><td><%=link_to "Kick", "/group/kick?" + + {group_id: group.id, user_id: user.id}.to_param, { :method => :post, :class=>"btn btn-danger btn-block" }%></td></tr>
+<%}%>
+</table>
+<h5>Add a new user</h5>
+<form action="/group/add" method="POST" class="form">
+    <input class="form-control" type="email" name="user_email" placeholder="user's email" style="max-width:300px"/><br />
+    <input type="hidden" name="groupID" value="<%=group.id%>"/>
+    <input type="submit" class="btn btn-primary"/>
+</form>
+<br /><br />
+<h3>Pay Period:</h3>
+<br /><br />
+<%=link_to "DELETE GROUP", "/api/v1/delgroup/#{group.id}", { :method => :delete, :class=>"btn btn-danger btn-block" }%></td>
+<br /><br />

@@ -21,4 +21,8 @@ class PayPeriodController < ApplicationController
         render plain: ""
     end
 
+    def checkApproval() 
+        periodID = params[:id]
+        period 
+    end
 end

@@ -15,13 +15,30 @@ class GroupController < ApplicationController
 
 
     def delGroup() 
-        @group = Group.find(params[:id])
-        puts("Name: ", @group.name, ".\nID: ", @group.id)
+        @group = nil 
+        begin
+            @group = Group.find(params[:id])
+        rescue ActiveRecord::RecordNotFound => e
+            @group = nil
+            #render :json => "403 Group not found", :status => 403
+        end
+        #puts("Name: ", @group.name, ".\nID: ", @group.id)
         if @group == nil
             render :json => "403 Group not found", :status => 403
         else 
             puts(@group.destroy)
-            render :json => "200 Success", :status => 200
+            @group.receipts.each { |receipt|
+                receipt.line_items.each { |item| 
+                    item.assigntables.each{ |entry| 
+                        entry.destroy
+                    }
+                    item.destroy
+                }
+                receipt.destroy
+            }
+            @group.payperiods.each { |period| period.destroy }
+            @group.destroy
+            redirect_to "/dashboard/groups/"
         end
     end
 
@@ -38,24 +55,26 @@ class GroupController < ApplicationController
         # Payperiod.create(start: payperiod_start, end: payperiod_end, group_id: grp.id).save!
         
 
-        render plain: ""
+        redirect_to "/dashboard/groups"
     end
 
 
-    def addUsers()
-        listID = JSON.parse(params[:lst_usersID])
+    def addUser()
+        user = params[:user_email]
         group_id = params[:groupID]
-
-        puts(listID.class)
-        puts(group_id)
 
         group = Group.find(group_id)
 
-        for userID in listID
-            group.users << User.find(userID)
+        usr = User.where(email: user)
+        if (usr == nil)
+            flash.alert = "User not found"
+            render plain: "User Not Found", status: :notfound
+        else
+            flash.notice = "User added"
+            group.users << usr
+            redirect_to "/dashboard/groups/admin/" + params[:groupID]
         end
         
-        render plain: ""
     end
 
     def attachGroupWithItem() 
@@ -92,6 +111,56 @@ class GroupController < ApplicationController
 
         # Delete all receipts that user create
         Receipt.where(user_id: userID).delete_all
-       
+
+        GroupUser.where("user_id = #{userID} and group_id = #{groupID}").delete_all
+        redirect_to "/dashboard/groups/"
+    end
+
+    def kickGroup()
+        userID = params[:user_id]
+        groupID = params[:group_id]
+
+        # List of line items ID
+        lid = Assigntable.where(user_id: userID).select("line_item_id")
+        
+        for item_id in lid
+            rec_id = LineItem.where(id: item_id).select("receipt_id")
+            if(Receipt.where(id: rec_id).select("group_id") == groupID)
+                Assigntable.where(line_item_id: item_id).delete_all
+            end
+        end
+
+        # Delete items from user's receipts
+        for rid in Receipt.where(user_id: userID).ids
+            LineItem.where(receipt_id: rid).delete_all
+        end
+
+        # Delete all receipts that user create
+        Receipt.where(user_id: userID).delete_all
+
+        GroupUser.where("user_id = #{userID} and group_id = #{groupID}").delete_all
+        redirect_to "/dashboard/groups/admin/" + params[:group_id]
+    end
+
+    def index()
+
+    end
+
+    def info()
+        g = Group.find(params[:id])
+        unless (g.users.include? current_user)
+            render plain: "Unauthorized", status: :forbidden
+            return
+        end
+        render :info, locals: {:group => g}
+    end
+
+    def admin()
+        g = Group.find(params[:id])
+        unless (g.admin == current_user)
+            render plain: "Unauthorized", status: :forbidden
+            return
+        end
+        render :admin, locals: {:group => g}
     end
 end

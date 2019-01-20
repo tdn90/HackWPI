@@ -1,0 +1,14 @@
+<h1 style="font-variant: small-caps; font-weight:bold">Group Information: <%=group.name%></h1>
+<br /><br />
+<h3>Members:</h3>
+<table class="table">
+    <tr><th>Name</th><th>Email</th></tr>
+<%group.users.each{ | user | %>
+    <tr><td><%=user.name%></td><td><%=user.email%></td><td></tr>
+<%}%>
+</table>
+<br /><br />
+<h3>Pay Period Information:</h3>
+<br /><br />
+<%=link_to "LEAVE GROUP", "/group/leave?group_id=#{group.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+<br /><br />

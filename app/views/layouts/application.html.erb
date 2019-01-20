@@ -36,7 +36,11 @@
             <%if (current_user != nil)%>
               <%=active_link_if_active("/dashboard", "Dashboard")%>
               <!--<<%=active_link_if_active("/dashboard/receipts", "Your Receipts")%>-->
-              <%=active_link_if_active("/dashboard/approvals",  "Outstanding Approvals ")%>
+              <%
+                ct_unapprove = Assigntable.where("user_id = #{current_user.id} and status != 1").count()
+
+              %>
+              <%=active_link_if_active("/dashboard/approvals",  "Outstanding Approvals" + ((ct_unapprove>0)? " <span class='badge badge-pill badge-danger'>#{ct_unapprove}</span>".html_safe : ""))%>
             </ul>
             <ul class="navbar-nav">
               <li class="nav-item dropdown">
@@ -45,7 +49,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item" %>
-                  <a class="dropdown-item" href="#">Memberships</a>
+                  <a class="dropdown-item" href="/dashboard/groups">Memberships</a>
                   <%= link_to "Account Settings", edit_user_registration_path, method: :get, class: "dropdown-item" %>
                 </div>
               </li>
