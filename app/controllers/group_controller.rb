@@ -42,7 +42,6 @@ class GroupController < ApplicationController
         puts(grp.id)
         Payperiod.create(start: payperiod_start, end: payperiod_end, group_id: grp.id).save!
         
-
         render plain: ""
     end
 
