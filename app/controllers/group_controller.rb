@@ -1,6 +1,6 @@
 class GroupController < ApplicationController
-    acts_as_token_authentication_handler_for User
-    before_action :authenticate_user!
+#    acts_as_token_authentication_handler_for User
+    before_action :authenticate_user!, except: [:index]
     skip_before_action :verify_authenticity_token
 
     def getGroupOfUser() 
@@ -12,6 +12,19 @@ class GroupController < ApplicationController
         puts(groups_json)
         render json: groups_json
     end
+
+
+    def delGroup() 
+        @group = Group.find(params[:id])
+        puts("Name: ", @group.name, ".\nID: ", @group.id)
+        if @group == nil
+            render :json => "403 Group not found", :status => 403
+        else 
+            puts(@group.destroy)
+            render :json => "200 Success", :status => 200
+        end
+    end
+
 
     def createGroup()
         admin_id = current_user.id
@@ -33,6 +46,7 @@ class GroupController < ApplicationController
         render plain: ""
     end
 
+<<<<<<< HEAD
     def addUsers()
         listID = JSON.parse(params[:lst_usersID])
         group_id = params[:groupID]
@@ -48,4 +62,20 @@ class GroupController < ApplicationController
         
         render plain: ""
     end
+=======
+
+    def attachGroupWithItem() 
+        groupID = params[:group_id]
+        itemID = params[:item_id]
+        @users = Group.find(groupID).users
+        @users.each { |user| puts("Name: ", user.name, ";ID: ", user.id) }
+
+        @lineItem = LineItem.find(itemID)
+        @lineItem.users = @users
+
+        @lineItem.each { |lineItem| puts("Item: ", lineItem.item, ";price: ", lineItem.price) }
+        render :json => "200 Success", :status => 200
+    end
+
+>>>>>>> ef620e6598aa23d1544002106e0f401c067ba06e
 end

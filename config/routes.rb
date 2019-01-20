@@ -10,11 +10,18 @@ Rails.application.routes.draw do
 
   post '/receipts/create', to: "receipts#createReceipt"
 
-  get '/group', to: "group#getGroupOfUser"
+  get '/api/v1/listgroup', to: "group#getGroupOfUser"
+
+  delete '/api/v1/delgroup/:id', to: "group#delGroup" #incomplete  
  
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
   post '/group/create', to: 'group#createGroup'
 
+<<<<<<< HEAD
   post '/group/add', to: 'group#addUsers'
+=======
+  # need item id + groupID
+  post '/group/attachGroupWithItem', to 'group#attachGroupWithItem'
+>>>>>>> ef620e6598aa23d1544002106e0f401c067ba06e
 end
