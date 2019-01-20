@@ -26,12 +26,12 @@ class GroupController < ApplicationController
         if @group == nil
             render :json => "403 Group not found", :status => 403
         else 
-            puts(@group.destroy)
-            @group.receipts.each { |receipt|
+            #puts(@group.destroy)
+            @group.receipts.each { |receipt|                
+                
                 receipt.line_items.each { |item| 
-                    item.assigntables.each{ |entry| 
-                        entry.destroy
-                    }
+                    puts(item.id)
+                    Assigntable.where(line_item: item).delete_all                     
                     item.destroy
                 }
                 receipt.destroy
