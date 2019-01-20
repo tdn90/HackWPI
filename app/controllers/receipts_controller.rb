@@ -25,6 +25,10 @@ class ReceiptsController < ApplicationController
             li = LineItem.create(receipt_id: receipt.id, item: item[0], price: item[1])
             group.users.each{ | user | li.users << user }
             li.save!
+            Assigntable.where(user: current_user, line_item: li).find_each{ |arow| 
+                arow.status = 1
+                arow.save!
+            }
         end
 
         render json: {"status": "OK"}
