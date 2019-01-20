@@ -65,6 +65,8 @@ class ReceiptsController < ApplicationController
         render plain: ""
     end
 
+   
+
     def createReceipt() 
         name = params[:name]
         description = params[:description]

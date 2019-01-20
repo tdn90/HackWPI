@@ -36,6 +36,8 @@ Rails.application.routes.draw do
 
   post '/dashboard/approvals/reject/:id', to: 'dashboard#reject'
   
-  post 'api/v1/updateReceipt', to: 'receipts#updateReceipt'
+  post '/api/v1/updateReceipt', to: 'receipts#updateReceipt'
+
+
 
 end
