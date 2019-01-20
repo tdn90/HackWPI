@@ -14,6 +14,12 @@
                     <%if (grct == 0) %>
                         <p>You aren't the leader of any group.</p>
                     <%end%>
+                    <br /><br />
+                    <h5>Form a new group</h5>
+                    <form action="/group/create" method="POST" class="form">
+                        <input class="form-control" type="text" name="name" placeholder="Group name" style="max-width:300px"/><br />
+                        <input type="submit" class="btn btn-primary"/>
+                    </form>
                 </div>
             </div>
         </div>

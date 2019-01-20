@@ -51,7 +51,7 @@ class GroupController < ApplicationController
         # Payperiod.create(start: payperiod_start, end: payperiod_end, group_id: grp.id).save!
         
 
-        render plain: ""
+        redirect_to "/dashboard/groups"
     end
 
 
@@ -109,7 +109,7 @@ class GroupController < ApplicationController
         Receipt.where(user_id: userID).delete_all
 
         GroupUser.where("user_id = #{userID} and group_id = #{groupID}").delete_all
-       
+        redirect_to "/dashboard/groups/"
     end
 
     def kickGroup()
