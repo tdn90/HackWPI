@@ -1,0 +1,40 @@
+<h1 style="font-variant: small-caps; font-weight:bold">Manage Memberships</h1>
+<br /><br />
+<div class="row">
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >Groups you lead</h5>
+                <div class="card-body">
+                    <% grct = 0
+                    Group.where("admin_id = #{current_user.id}").each{ | group|
+                    grct = grct + 1%>
+                        <%=group.name%><br />
+                    <%}%>
+                    <%if (grct == 0) %>
+                        <p>You aren't the leader of any group.</p>
+                    <%end%>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+    <div class="col-sm">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" >Groups you participate in</h5>
+                <div class="card-body">
+                    <%grct = 0
+                    GroupUser.where("user_id = #{current_user.id}").each{ | groupuser|
+                    grct = grct + 1%>
+                        <%=groupuser.group.name%><br />
+                    <%}%>
+                    <%if (grct == 0) %>
+                        <p>You aren't a member of any group.</p>
+                    <%end%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />

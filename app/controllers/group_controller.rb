@@ -94,4 +94,8 @@ class GroupController < ApplicationController
         Receipt.where(user_id: userID).delete_all
        
     end
+
+    def index()
+
+    end
 end

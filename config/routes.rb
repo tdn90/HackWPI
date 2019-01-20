@@ -40,4 +40,5 @@ Rails.application.routes.draw do
 
   post '/pay_period/create', to: 'pay_period#create_pay_period'
 
+  get '/dashboard/groups', to: 'group#index'
 end
