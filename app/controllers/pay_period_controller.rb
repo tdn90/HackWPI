@@ -23,6 +23,8 @@ class PayPeriodController < ApplicationController
 
     def checkApproval() 
         periodID = params[:id]
-        period 
+        @period = Payperiod.find(periodID)
+        @group = @period.group
+        
     end
 end

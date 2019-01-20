@@ -58,7 +58,7 @@
 </table>
 <button type="button" class="btn btn-primary" onclick="newRow()">Add row</button>
 <hr />
-<input type="submit" class="btn btn-success"/> <a href="/dashboard/receipts" class="btn btn-secondary">Cancel</a> <%=link_to "DELETE", "/", { :method => :delete, :class=>"btn btn-danger" }%>
+<input type="submit" class="btn btn-success"/> <a href="/dashboard" class="btn btn-secondary">Cancel</a> <%=link_to "DELETE", "/", { :method => :delete, :class=>"btn btn-danger" }%>
 <form>
 <script type="text/javascript">
 
@@ -127,30 +127,25 @@ function submit() {
     var store = $("#store").val()
     var desc = $("#desc").val()
 
-    /*$.ajax({
+    $.ajax({
         type: "POST",
-        url: "",
+        url: "/api/v1/updateReceipt",
         data: {
             store: store,
             desc: desc,
+            id: <%=receipt.id%>,
             lines: lineitems.lines
         },
         success: function(data) {
             // POST was successful - do something with the response
             //alert('Server sent back: ' + data);
-            window.location.href="/dashboard/receipts"
+            window.location.href="/dashboard"
         },
         error: function(data) {
             // Server error, e.g. 404, 500, error
             alert(data.responseText);
         }
-        });*/
-        console.log(JSON.stringify({
-            store: store,
-            desc: desc,
-            id: <%=receipt.id%>,
-            lines: lineitems.lines
-        }))
+        });
 }
 
 <%if edit %>

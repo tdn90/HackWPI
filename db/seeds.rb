@@ -7,23 +7,35 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 user = User.find(1)
+user2 = User.find(2)
 
 group = Group.create(admin: user, name: "Test Group")
 group.save!
 group.users << user
 
-group.save!
+group2 = Group.create(admin: user2, name: "Test Group 2")
+group2.save!
 
 receipt = Receipt.create(name: 'Day 1', description: "Hello", user: user, group: group)
 receipt.save!
-receipt2 = Receipt.create(name: 'Day 2', description: "Hello2", user: user, group: group)
+receipt2 = Receipt.create(name: 'Day 2', description: "Hello2", user: user2, group: group2)
 receipt2.save!
+receipt = Receipt.create(name: 'Day 3', description: "Hello", user: user, group: group)
+receipt.save!
+receipt2 = Receipt.create(name: 'Day 4', description: "Hello2", user: user2, group: group2)
+receipt2.save!
+
 
 line1 = LineItem.create(receipt: receipt2, item: "Milk", price: 5)
 line2 = LineItem.create(receipt: receipt2, item: "Cereal", price: 6)
 line1.save!
 line2.save!
 
+
+line3 = LineItem.create(receipt: receipt, item: "Milk", price: 5)
+line4 = LineItem.create(receipt: receipt, item: "Cereal", price: 6)
+line3.save!
+line4.save!
 #tag1 = LineItemUser.create(Lineitem: line1, user: user, status: 0)
 #tag2 = LineItemUser.create(line_item_id: line2, user: user, status: 1)
 #tag1.save!
