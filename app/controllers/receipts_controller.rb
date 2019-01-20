@@ -12,12 +12,12 @@ class ReceiptsController < ApplicationController
 
     def updateReceipt() 
         #@store = params[:store]
+
         @lines = params[:lines]
         puts("Processing!")
         #puts(@stores)
-        puts(@lines)
-        @lines.each{ |key, line| 
-            puts line.inspect
+        #puts(@lines)
+        @lines.each{ |line| 
             @lineItemID = line["id"]
             @item = line["desc"]
             @price = line["price"]

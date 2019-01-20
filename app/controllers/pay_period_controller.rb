@@ -17,14 +17,15 @@ class PayPeriodController < ApplicationController
             endday = (startday >> 2) - cur_day
         end
 
-        Payperiod.create(start: startday, end: endday, archived: 1, group_id: groupID).save!
+        pp = Payperiod.create(start: startday, end: endday, archived: 1, group_id: groupID)
+        pp.save!
+
+        
         render plain: ""
     end
 
     def checkApproval() 
         periodID = params[:id]
-        @period = Payperiod.find(periodID)
-        @group = @period.group
-        
+        period 
     end
 end
