@@ -76,22 +76,6 @@ class GroupController < ApplicationController
         render plain: ""
     end
 
-    def addUsers()
-        listID = JSON.parse(params[:lst_usersID])
-        group_id = params[:groupID]
-
-        puts(listID.class)
-        puts(group_id)
-
-        group = Group.find(group_id)
-
-        for userID in listID
-            group.users << User.find(userID)
-        end
-        
-        render plain: ""
-    end
-
     def leaveGroup()
         userID = current_user.id
         groupID = params[:group_id]
@@ -113,8 +97,6 @@ class GroupController < ApplicationController
 
         # Delete all receipts that user create
         Receipt.where(user_id: userID).delete_all
-
-        puts(GroupUser.where(user_id: userID).delete_all)
        
     end
 end
