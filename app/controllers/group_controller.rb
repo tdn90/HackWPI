@@ -36,6 +36,7 @@ class GroupController < ApplicationController
                 }
                 receipt.destroy
             }
+            @group.payperiods.each { |period| period.destroy }
             @group.destroy
             redirect_to "/dashboard/groups/"
         end
