@@ -17,4 +17,7 @@ Rails.application.routes.draw do
   post '/api/v1/receiptPhotoTranscribe', to: 'photo#upload'  
 
   post '/group/create', to: 'group#createGroup'
+
+  # need item id + groupID
+  post '/group/attachGroupWithItem', to 'group#attachGroupWithItem'
 end

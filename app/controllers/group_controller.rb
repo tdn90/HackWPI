@@ -46,4 +46,18 @@ class GroupController < ApplicationController
         render plain: ""
     end
 
+
+    def attachGroupWithItem() 
+        groupID = params[:group_id]
+        itemID = params[:item_id]
+        @users = Group.find(groupID).users
+        @users.each { |user| puts("Name: ", user.name, ";ID: ", user.id) }
+
+        @lineItem = LineItem.find(itemID)
+        @lineItem.users = @users
+
+        @lineItem.each { |lineItem| puts("Item: ", lineItem.item, ";price: ", lineItem.price) }
+        render :json => "200 Success", :status => 200
+    end
+
 end
