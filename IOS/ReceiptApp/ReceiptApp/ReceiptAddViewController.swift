@@ -8,14 +8,18 @@
 
 import UIKit
 import SwiftyJSON
+import Alamofire
 
 class ReceiptAddViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     var kbdh:CGFloat = 0
     var data:JSON?
     @IBOutlet weak var tbleView: UITableView!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var picker: UIPickerView!
+    var groups:[Int:String] = [:]
     
     func isDouble(s:String) -> Bool {
         
@@ -34,11 +38,11 @@ class ReceiptAddViewController : UIViewController, UITableViewDelegate, UITableV
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 5
+        return groups.keys.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "Placeholder"
+        return groups[ Array(groups.keys)[row]]
     }
     
     
@@ -54,6 +58,22 @@ class ReceiptAddViewController : UIViewController, UITableViewDelegate, UITableV
         toolbar.sizeToFit()
         //setting toolbar as inputAccessoryView
         self.name.inputAccessoryView = toolbar
+        
+        Alamofire.request(appDelegate.url + "/api/v1/listgroup", method: .get, parameters: ["user_email": appDelegate.email!, "user_token": appDelegate.token!]).responseString { response in
+            if let result = response.result.value {
+                print(result)
+                let json = JSON(parseJSON: result)
+                print("json")
+                print(json)
+                for (key, subJson) in json {
+                    if let title = subJson.string {
+                        self.groups[Int(key)!] = title;
+                    }
+                }
+                print(self.groups)
+                self.picker.reloadAllComponents()
+            }
+        }
         
     }
     
