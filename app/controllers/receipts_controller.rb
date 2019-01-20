@@ -10,6 +10,61 @@ class ReceiptsController < ApplicationController
         @lines = @receipt.line_items        
     end
 
+    def updateReceipt() 
+        #@store = params[:store]
+
+        @lines = params[:lines]
+        puts("Processing!")
+        #puts(@stores)
+        #puts(@lines)
+        @lines.each{ |line| 
+            @lineItemID = line["id"]
+            @item = line["desc"]
+            @price = line["price"]
+            #if lineTimeID = null then this is a new item
+            if (@lineItemID == nil) 
+                @receiptID = params[:id]
+                newItem = LineItem.create(item: @item, price: @price, receipt_id: @receiptID)
+                newItem.save!
+                @lineItemID = newItem.id
+            end
+
+            #keep processing as normal
+            puts(line["desc"])
+
+            #puts(@lineItemID)
+            #puts(line["price"])
+
+            @people = line["people"]
+            #puts(@people)
+
+            @people.each { |user_id, val|
+                puts(user_id)
+                if (val)  #checked
+                    # check if already there 
+                    # if Person.exists?(['name LIKE ?', "%#{query}%"])
+                    if Assigntable.exists?(['line_item_id = ? and user_id = ?', "%#{@lineItemID}%", "%#{user_id}%"]) 
+                        puts("Record exists. Do nothing")
+                    else 
+                        puts("Add new record")
+                        record = Assigntable.create(line_item_id: @lineItemID, user_id: Integer(user_id), status: 0)
+                        record.save!
+                    # else just add
+                    end
+                else  #unchecked
+                    puts("remove anyway")
+                    
+                    begin
+                        Assigntable.find(:conditions => ["line_item_id = ? and user_id = ?", @lineItemID, Integer(user_id)]).destroy                    
+                    rescue ActiveRecord::RecordNotFound => e
+                        my_record = nil
+                    end
+                end
+            }
+        }
+        render plain: ""
+    end
+
     def createReceipt() 
         name = params[:name]
         description = params[:description]
