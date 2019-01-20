@@ -22,7 +22,6 @@ Rails.application.routes.draw do
   # need item id + groupID
   post '/group/attachGroupWithItem', to: 'group#attachGroupWithItem'
 
-
   post '/group/leave', to: 'group#leaveGroup'
 
   post '/receipts/delete', to: 'receipts#deleteReceipt'
