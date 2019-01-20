@@ -12,9 +12,12 @@ user2 = User.find(2)
 group = Group.create(admin: user, name: "Test Group")
 group.save!
 group.users << user
+group.users << user2
 
 group2 = Group.create(admin: user2, name: "Test Group 2")
 group2.save!
+group2.users << user
+group2.users << user2
 
 receipt = Receipt.create(name: 'Day 1', description: "Hello", user: user, group: group)
 receipt.save!
@@ -36,7 +39,16 @@ line3 = LineItem.create(receipt: receipt, item: "Milk", price: 5)
 line4 = LineItem.create(receipt: receipt, item: "Cereal", price: 6)
 line3.save!
 line4.save!
-#tag1 = LineItemUser.create(Lineitem: line1, user: user, status: 0)
+
+tag1 = Assigntable.create(line_item_id: line1.id, user: user, status: 0)
+tag2 = Assigntable.create(line_item_id: line2.id, user: user2, status: 0)
+tag3 = Assigntable.create(line_item_id: line3.id, user: user, status: 0)
+tag4 = Assigntable.create(line_item_id: line4.id, user: user2, status: 0)
+tag1.save!
+tag2.save!
+tag3.save!
+tag4.save!
+#tag1 = LineItemUser.crearakete(Lineitem: line1, user: user, status: 0)
 #tag2 = LineItemUser.create(line_item_id: line2, user: user, status: 1)
 #tag1.save!
 #tag2.save!
