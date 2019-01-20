@@ -88,6 +88,9 @@ class ReceiptsController < ApplicationController
             }
         end
 
+        receipt.payperiod = group.payperiod
+        receipt.save!
+
         render json: {"status": "OK"}
     end 
 
