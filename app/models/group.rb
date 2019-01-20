@@ -4,5 +4,6 @@ class Group < ApplicationRecord
     has_one :payperiod
     has_many :receipts, :dependent => :delete_all
     has_and_belongs_to_many :users
+    has_many :payperiods
     #has_many :users    
 end

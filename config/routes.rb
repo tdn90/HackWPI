@@ -38,6 +38,6 @@ Rails.application.routes.draw do
   
   post '/api/v1/updateReceipt', to: 'receipts#updateReceipt'
 
-
+  post '/pay_period/create', to: 'pay_period#create_pay_period'
 
 end

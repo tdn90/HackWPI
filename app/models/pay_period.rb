@@ -1,2 +1,0 @@
-class PayPeriod < ApplicationRecord
-end
