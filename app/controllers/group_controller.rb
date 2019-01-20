@@ -32,4 +32,20 @@ class GroupController < ApplicationController
 
         render plain: ""
     end
+
+    def addUsers()
+        listID = JSON.parse(params[:lst_usersID])
+        group_id = params[:groupID]
+
+        puts(listID.class)
+        puts(group_id)
+
+        group = Group.find(group_id)
+
+        for userID in listID
+            group.users << User.find(userID)
+        end
+        
+        render plain: ""
+    end
 end
