@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         if (appDelegate.token != nil) {
             activity.isHidden = false
             activity.startAnimating()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { // Change `2.0` to the desired number of seconds.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { // Change `2.0` to the desired number of seconds.
                 self.activity.isHidden = true
                 self.activity.stopAnimating()
                 self.performSegue(withIdentifier: "LoginDoneSegue", sender: self)
