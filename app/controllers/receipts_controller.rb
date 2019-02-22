@@ -68,12 +68,19 @@ class ReceiptsController < ApplicationController
    
 
     def createReceipt() 
+
         name = params[:name]
         description = params[:description]
         user_id = current_user.id
         group_id = params[:groupID]
         group = Group.find(group_id)
         line_items = params[:lineItems]
+
+        pp = group.current_pay_period()
+        if (pp == nil)
+            render json: {"status": "ERROR", "description": "No active period in group"}
+            return
+        else
 
         receipt = Receipt.create(name: name, description: description, user: current_user, group: group)
         receipt.save!
@@ -88,7 +95,8 @@ class ReceiptsController < ApplicationController
             }
         end
 
-        receipt.payperiod = group.payperiod
+        receipt.payperiod = pp
+        
         receipt.save!
 
         render json: {"status": "OK"}

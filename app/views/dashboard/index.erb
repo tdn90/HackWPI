@@ -4,11 +4,11 @@
     <div class="col-sm">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title" >This Pay Period</h5>
+                <h5 class="card-title" >Memberships</h5>
                 <div class="card-body">
                     <ul>
                         <%current_user.groups.each{|group|%>
-                        <li><strong><%=group.name%></strong>: Ends XXXXX</li>
+                        <li><a href="/dashboard/groups/info/<%=group.id%>"><strong><%=group.name%></strong></a>: Pay Period Ends <%=group.payperiod.end.strftime('%v')%></li>
                         <%}%>
                     </ul>
                 </div>

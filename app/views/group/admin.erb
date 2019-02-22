@@ -15,6 +15,26 @@
 </form>
 <br /><br />
 <h3>Pay Period:</h3>
+<%if (payperiod != nil) %>
+    <%if (payperiod.is_expired)%>
+        <p>Pay period has expired on <%=payperiod.end.strftime("%v")%>.</p>
+    <%else%>
+        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.start.strftime("%v")%></p>
+    <%end%>
+    <%unapproved = payperiod.get_unapproved_lineitems()%>
+    <%if (unapproved.count > 0)%>
+        <p>Unapproved Line Items (preventing a square-up):</p>
+        <ul>
+            <%unapproved.each{|li|%>
+                <li><strong><%=li.name%></strong> on <strong><%=li.recpt_name%></strong> was not approved by <strong><%=User.find(li.unapprover_id).name%></strong></li>
+            <%}%>
+        </ul>
+    <% else %>
+        <p>Everyone has approved expenses in this period. You may calculate the pay-table by clicking the button below.</p>
+        <%=link_to "Calculate expenses", "/dashboard/groups/squareup/#{group.id}", { :method => :post, :class=>"btn btn-success" }%></td>
+    <%end%>
+<%end%>
 <br /><br />
-<%=link_to "DELETE GROUP", "/api/v1/delgroup/#{group.id}", { :method => :delete, :class=>"btn btn-danger btn-block" }%></td>
+<h3>Danger Zone:</h3>
+<%=link_to "Permanently Delete Group", "/api/v1/delgroup/#{group.id}", { :method => :delete, :class=>"btn btn-danger btn-block" }%></td>
 <br /><br />

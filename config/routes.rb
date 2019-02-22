@@ -49,4 +49,8 @@ Rails.application.routes.draw do
   get '/payperiod/checkApproval', to: 'pay_period#checkApproval'
 
   get '/dashboard/groups/info/:id', to: 'group#info'
+
+  post '/dashboard/groups/squareup/:id', to: 'group#squareup'
+
+  get '/dashboard/groups/viewperiod/:id', to: 'group#showpayperiod'
 end

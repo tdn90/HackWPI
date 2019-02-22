@@ -1,0 +1,14 @@
+<h1>Showing Pay Period Results<h1> 
+<h3><%=payperiod.start.strftime("%v")%> to <%=payperiod.end.strftime("%v")%></h3>
+
+<table class="table">
+    <tr ><td colspan="2" ></td><td colspan="<%=paytable.keys.count%>" style="text-align:center">Receives Money</td></tr> 
+    <tr><td style="-webkit-transform: rotate(-90deg); width:30px;" rowspan="<%=paytable.keys.count+1%>">Sends Money</td><td></td><%paytable.keys.each{ | key| %><td><%=User.find(key).name%></td><%}%></tr>
+    <%paytable.each{ | payee, payments | %>
+        <tr><td><%=User.find(payee).name%></td>
+            <%payments.each{ | payer, price | %>
+                <td><%=number_to_currency(price)%></td>
+            <%}%>
+        </tr>
+    <%}%>
+</table>

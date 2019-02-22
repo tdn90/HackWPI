@@ -2,14 +2,15 @@
 
 <table class="table">
     <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th><%=link_to "Accept All", "/dashboard/approvals/approveall", { :method => :post, :class=>"btn btn-success btn-block" }%></th></tr>
-<% Assigntable.where("user_id = #{current_user.id} and (status is NULL or status = 0)").find_each{ |arow| %>
+<% LineItem.joins(:assigntables).joins(:receipt).joins("INNER JOIN payperiods ON receipts.payperiod_id = payperiods.id").select('line_items.*, payperiods.archived').where("payperiods.archived = 0 and assigntables.user_id = #{current_user.id} and (status is NULL or status = 0)").uniq().each { |arow| %>
     <tr>
-        <td><%=arow.line_item.item%></td>
-        <td>$<%=arow.line_item.price%></td>
-        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
-        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
-        <td><%=arow.line_item.receipt.user.name%></td>
-        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-success btn-block" }%><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+        <td><%=arow.item%></td>
+        <td>$<%=arow.price%></td>
+        <td>$<%=arow.price / arow.users.size%></td>
+        <td><a href="/receipts/<%=arow.receipt.id%>"><%=arow.receipt.name%></a></td>
+        <td><%=arow.receipt.user.name%></td>
+        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.id}", { :method => :post, :class=>"btn btn-success btn-block" }%><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+    </tr>
 <%}%>
 </table>
 
@@ -18,14 +19,15 @@
 
 <table class="table">
     <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th></th></tr>
-<% Assigntable.where("user_id = #{current_user.id} and status = 2").find_each{ |arow| %>
-    <tr>
-        <td><%=arow.line_item.item%></td>
-        <td>$<%=arow.line_item.price%></td>
-        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
-        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
-        <td><%=arow.line_item.receipt.user.name%></td>
-        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-success btn-block" }%></td>
+<% LineItem.joins(:assigntables).joins(:receipt).joins("INNER JOIN payperiods ON receipts.payperiod_id = payperiods.id").select('line_items.*, payperiods.archived').where("payperiods.archived = 0 and assigntables.user_id = #{current_user.id} and (status is NULL or status = 2)").uniq().each { |arow| %>
+    <tr>    
+        <td><%=arow.item%></td>
+        <td>$<%=arow.price%></td>
+        <td>$<%=arow.price / arow.users.size%></td>
+        <td><a href="/receipts/<%=arow.receipt.id%>"><%=arow.receipt.name%></a></td>
+        <td><%=arow.receipt.user.name%></td>
+        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.id}", { :method => :post, :class=>"btn btn-success btn-block" }%></td>
+    </tr>
 <%}%>
 </table>
 
@@ -33,13 +35,14 @@
 
 <table class="table">
     <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th></th></tr>
-<% Assigntable.where("user_id = #{current_user.id} and status = 1").find_each{ |arow| %>
-    <tr>
-        <td><%=arow.line_item.item%></td>
-        <td>$<%=arow.line_item.price%></td>
-        <td>$<%=arow.line_item.price / arow.line_item.users.size%></td>
-        <td><a href="/receipts/<%=arow.line_item.receipt.id%>"><%=arow.line_item.receipt.name%></a></td>
-        <td><%=arow.line_item.receipt.user.name%></td>
-        <td><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+<% LineItem.joins(:assigntables).joins(:receipt).joins("INNER JOIN payperiods ON receipts.payperiod_id = payperiods.id").select('line_items.*, payperiods.archived').where("payperiods.archived = 0 and assigntables.user_id = #{current_user.id} and (status is NULL or status = 1)").uniq().each { |arow| %>
+    <tr>    
+        <td><%=arow.item%></td>
+        <td>$<%=arow.price%></td>
+        <td>$<%=arow.price / arow.users.size%></td>
+        <td><a href="/receipts/<%=arow.receipt.id%>"><%=arow.receipt.name%></a></td>
+        <td><%=arow.receipt.user.name%></td>
+        <td><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+    </tr>
 <%}%>
 </table>

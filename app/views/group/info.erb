@@ -8,7 +8,22 @@
 <%}%>
 </table>
 <br /><br />
-<h3>Pay Period Information:</h3>
+<h3>Pay Period Information</h3>
+<%if (payperiod != nil) %>
+    <%if (payperiod.is_expired)%>
+        <p>Pay period has expired. Ask your group leader to calculate all payments. Please make sure you have approved all fo your receipts, as your group leader cannot procede unless everyone has.</p>
+    <%else%>
+        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.start.strftime("%v")%></p>
+    <%end%>
+<%else%>
+    <p>There is no active pay period. Ask your group leader to start a new pay period so that you can add receipts.</p>
+<%end%>
+
+<h3>Old Pay Periods</h3>
+<%Payperiod.where(archived: true, group: group).each { | period | %>
+<a href="/dashboard/groups/viewperiod/<%=period.id%>"><%=period.start.strftime("%v")%> to <%=period.end.strftime("%v")%></a><br />
+<%}%>
+
 <br /><br />
 <%=link_to "LEAVE GROUP", "/group/leave?group_id=#{group.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
 <br /><br />
