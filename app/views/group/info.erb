@@ -11,7 +11,7 @@
 <h3>Pay Period Information</h3>
 <%if (payperiod != nil) %>
     <%if (payperiod.is_expired)%>
-        <p>Pay period has expired. Ask your group leader to calculate all payments. Please make sure you have approved all fo your receipts, as your group leader cannot procede unless everyone has.</p>
+        <p>Pay period has expired. Ask your group leader to calculate all payments. Please make sure you have approved all of your receipts, as your group leader cannot procede unless everyone has.</p>
     <%else%>
         <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.start.strftime("%v")%></p>
     <%end%>

@@ -11,8 +11,8 @@ class ReceiptsController < ApplicationController
     end
 
     def updateReceipt() 
-        #@store = params[:store]
-
+        @store = params[:store]
+        
         @lines = params[:lines]
         puts("Processing!")
         #puts(@stores)
@@ -80,7 +80,7 @@ class ReceiptsController < ApplicationController
         if (pp == nil)
             render json: {"status": "ERROR", "description": "No active period in group"}
             return
-        else
+        end
 
         receipt = Receipt.create(name: name, description: description, user: current_user, group: group)
         receipt.save!
@@ -113,7 +113,7 @@ class ReceiptsController < ApplicationController
     def edit()
         recpt = Receipt.find(params[:id])
         
-        if current_user != recpt.user
+        if (current_user != recpt.user)
             render plain: "Unauthorized", status: :forbidden
             return
         end

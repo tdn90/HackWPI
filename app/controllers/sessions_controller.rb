@@ -1,4 +1,6 @@
 class SessionsController < Devise::SessionsController
+    layout "signin", only: [:new]
+
     def new
         super
     end
