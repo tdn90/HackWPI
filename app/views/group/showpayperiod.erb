@@ -12,3 +12,7 @@
         </tr>
     <%}%>
 </table>
+
+<%if (current_user == payperiod.group.admin && payperiod.group.payperiods.where(archived:false).count == 0)%>
+    <div class="alert alert-danger"><strong>Action Needed!</strong> Your group needs a new pay period to continue. Create a new pay period <a href="/dashboard/groups/admin/<%=payperiod.group.id%>">here<a/>.</div>
+<%end%>

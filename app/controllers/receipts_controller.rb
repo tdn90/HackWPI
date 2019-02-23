@@ -17,10 +17,11 @@ class ReceiptsController < ApplicationController
         puts("Processing!")
         #puts(@stores)
         #puts(@lines)
-        @lines.each{ |line| 
-            @lineItemID = line["id"]
+        @lines.each{ |k, line| 
+        puts line.inspect
+            @lineItemID = line["id"].to_i
             @item = line["desc"]
-            @price = line["price"]
+            @price = line["price"].to_f
             #if lineTimeID = null then this is a new item
             if (@lineItemID == nil) 
                 @receiptID = params[:id]
@@ -43,7 +44,7 @@ class ReceiptsController < ApplicationController
                 if (val)  #checked
                     # check if already there 
                     # if Person.exists?(['name LIKE ?', "%#{query}%"])
-                    if Assigntable.exists?(['line_item_id = ? and user_id = ?', "%#{@lineItemID}%", "%#{user_id}%"]) 
+                    if Assigntable.exists?(['line_item_id = ? and user_id = ?', @lineItemID, @user_id]) 
                         puts("Record exists. Do nothing")
                     else 
                         puts("Add new record")

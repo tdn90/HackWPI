@@ -46,6 +46,7 @@ class GroupController < ApplicationController
 
     # Create group
     grp = Group.create(admin_id: admin_id, name: name)
+    grp.users << current_user
     grp.save!
 
     groupID = grp.id
@@ -77,16 +78,21 @@ class GroupController < ApplicationController
     group_id = params[:groupID]
 
     group = Group.find(group_id)
+    unless (group.admin == current_user)
+      render plain: "Unauthorized", status: :forbidden
+      return
+    end
 
     usr = User.where(email: user)
     if (usr == nil)
       flash.alert = "User not found"
       render plain: "User Not Found", status: :notfound
-    else
-      flash.notice = "User added"
-      group.users << usr
-      redirect_to "/dashboard/groups/admin/" + params[:groupID]
+      return
     end
+
+    flash.notice = "User added"
+    group.users << usr unless group.users.where(email: user).count > 0
+    redirect_to "/dashboard/groups/admin/" + params[:groupID]
   end
 
   def attachGroupWithItem()
@@ -106,9 +112,20 @@ class GroupController < ApplicationController
     userID = current_user.id
     groupID = params[:group_id]
 
+    g = Group.find(groupID)
+    unless (g.users.include? current_user)
+      render plain: "Unauthorized", status: :forbidden
+      return
+    end
+
+    if (group.admin == current_user)
+      render plain: "Group admins cannot leave a group", status: 400
+      return
+    end
+
     # List of line items ID
     lid = Assigntable.where(user_id: userID).select("line_item_id")
-
+    
     for item_id in lid
       rec_id = LineItem.where(id: item_id).select("receipt_id")
       if (Receipt.where(id: rec_id).select("group_id") == groupID)
@@ -131,6 +148,17 @@ class GroupController < ApplicationController
   def kickGroup()
     userID = params[:user_id]
     groupID = params[:group_id]
+
+    g = Group.find(groupID)
+    unless (g.admin == current_user)
+      render plain: "Unauthorized", status: :forbidden
+      return
+    end
+
+    if (current_user == User.find(userID))
+      render plain: "Admin can't kick themselves", status: 400
+      return
+    end
 
     # List of line items ID
     lid = Assigntable.where(user_id: userID).select("line_item_id")
@@ -188,6 +216,10 @@ class GroupController < ApplicationController
       return
     end
     curr_pay = g.current_pay_period()
+    if (curr_pay == nil)
+      render plain: "ERROR! No Pay Period. Can't calculate pay table", status: 400
+      return
+    end
     if (!curr_pay.all_receipts_done())
       redirect_to "/dashboard/groups/admin/#{g.id}"
     else

@@ -4,7 +4,7 @@
 <table class="table">
     <tr><th>Name</th><th>Email</th><th></th></tr>
 <%group.users.each{ | user | %>
-    <tr><td><%=user.name%></td><td><%=user.email%></td><td><%=link_to "Kick", "/group/kick?" + + {group_id: group.id, user_id: user.id}.to_param, { :method => :post, :class=>"btn btn-danger btn-block" }%></td></tr>
+    <tr><td><%=user.name%></td><td><%=user.email%></td><td><%=link_to "Kick", "/group/kick?" + + {group_id: group.id, user_id: user.id}.to_param, { :method => :post, :class=>"btn btn-danger btn-block" } unless (current_user == user)%></td></tr>
 <%}%>
 </table>
 <h5>Add a new user</h5>
@@ -14,12 +14,12 @@
     <input type="submit" class="btn btn-primary"/>
 </form>
 <br /><br />
-<h3>Pay Period:</h3>
+<h3>Current Pay Period:</h3>
 <%if (payperiod != nil) %>
     <%if (payperiod.is_expired)%>
         <p>Pay period has expired on <%=payperiod.end.strftime("%v")%>.</p>
     <%else%>
-        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.start.strftime("%v")%></p>
+        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.end.strftime("%v")%></p>
     <%end%>
     <%unapproved = payperiod.get_unapproved_lineitems()%>
     <%if (unapproved.count > 0)%>
@@ -31,10 +31,28 @@
         </ul>
     <% else %>
         <p>Everyone has approved expenses in this period. You may calculate the pay-table by clicking the button below.</p>
-        <%=link_to "Calculate expenses", "/dashboard/groups/squareup/#{group.id}", { :method => :post, :class=>"btn btn-success" }%></td>
+        <%=link_to "Calculate expenses", "/dashboard/groups/squareup/#{group.id}", { :method => :post, :class=>"btn btn-success" }%>
     <%end%>
+<%else%>
+<div class="alert alert-danger"><strong>Action Needed!</strong><span> You need to make a pay period before <em>anyone</em> in this group can add receipts.</span></div>
+<form action="#" method="post" >
+    <label for="ndays">Duration of next pay period:</label>
+    <div class="input-group" style="max-width:150px;">
+                <input class="form-control" type="number" value="14" step="1" min="1" required/>
+                <div class="input-group-append">
+                    <div class="input-group-text">days</div>
+                </div>
+            </div>
+    <br /><input type="submit" value="Create next pay period" class="btn btn-success" />
+</form>
+
 <%end%>
 <br /><br />
+<h3>Old Pay Periods:</h3>
+<%Payperiod.where(archived: true, group: group).each { | period | %>
+<a href="/dashboard/groups/viewperiod/<%=period.id%>"><%=period.start.strftime("%v")%> to <%=period.end.strftime("%v")%></a><br />
+<%}%>
+<br /><br />
 <h3>Danger Zone:</h3>
-<%=link_to "Permanently Delete Group", "/api/v1/delgroup/#{group.id}", { :method => :delete, :class=>"btn btn-danger btn-block" }%></td>
+<%=link_to "Permanently Delete Group", "/api/v1/delgroup/#{group.id}", { :method => :delete, :class=>"btn btn-danger btn-block" }%>
 <br /><br />

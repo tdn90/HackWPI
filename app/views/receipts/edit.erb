@@ -127,6 +127,11 @@ function submit() {
     var store = $("#store").val()
     var desc = $("#desc").val()
 
+    console.log({store: store,
+            desc: desc,
+            id: <%=receipt.id%>,
+            lines: lineitems.lines})
+
     $.ajax({
         type: "POST",
         url: "/api/v1/updateReceipt",
@@ -158,11 +163,11 @@ function submit() {
 <%
     receipt.line_items.each { |item| 
 %>
+        //lineitiem id <%=item.id%>
         ln = JSON.parse(JSON.stringify(default_line))
-        ln.desc = "<%=item.item%>"
-        ln.price = <%=item.price%>
-        ln.id = <%=item.id%>
-        lineitems.lines.push(ln)
+            ln.desc = "<%=item.item%>"
+            ln.price = <%=item.price%>
+            ln.id = <%=item.id%>
 <% 
         Assigntable.where("line_item_id = #{item.id}").find_each{ |arow| 
             puts arow.inspect%>
@@ -170,6 +175,8 @@ function submit() {
             ln.people_approv[<%=arow.user.id%>] = <%= ((arow.status != nil)? arow.status : 0) %>
 <%
         }
+    %>lineitems.lines.push(ln)
+    <%
     }
 %>
     //=============================//

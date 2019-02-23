@@ -9,7 +9,7 @@
         <td>$<%=arow.price / arow.users.size%></td>
         <td><a href="/receipts/<%=arow.receipt.id%>"><%=arow.receipt.name%></a></td>
         <td><%=arow.receipt.user.name%></td>
-        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.id}", { :method => :post, :class=>"btn btn-success btn-block" }%><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.line_item.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+        <td><%=link_to "Accept", "/dashboard/approvals/approve/#{arow.id}", { :method => :post, :class=>"btn btn-success btn-block" }%><%=link_to "Reject", "/dashboard/approvals/reject/#{arow.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
     </tr>
 <%}%>
 </table>
@@ -35,7 +35,7 @@
 
 <table class="table">
     <tr><th>Item</th><th>Price</th><th>Your Contribution</th><th>Receipt</th><th>Owner</th><th></th></tr>
-<% LineItem.joins(:assigntables).joins(:receipt).joins("INNER JOIN payperiods ON receipts.payperiod_id = payperiods.id").select('line_items.*, payperiods.archived').where("payperiods.archived = 0 and assigntables.user_id = #{current_user.id} and (status is NULL or status = 1)").uniq().each { |arow| %>
+<% LineItem.joins(:assigntables).joins(:receipt).joins("INNER JOIN payperiods ON receipts.payperiod_id = payperiods.id").select('line_items.*, payperiods.archived').where("payperiods.archived = 0 and assigntables.user_id = ? and receipts.user_id != ? and (status is NULL or status = 1)", current_user.id, current_user.id).uniq().each { |arow| %>
     <tr>    
         <td><%=arow.item%></td>
         <td>$<%=arow.price%></td>

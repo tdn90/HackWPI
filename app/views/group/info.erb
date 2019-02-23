@@ -1,5 +1,9 @@
 <h1 style="font-variant: small-caps; font-weight:bold">Group Information: <%=group.name%></h1>
+<br />
+<%if (group.admin == current_user)%>
+<%=link_to "Manage group", "/dashboard/groups/admin/ #{group.id}", { :method => :get, :class=>"btn btn-warning" }%></td>
 <br /><br />
+<%end%>
 <h3>Members:</h3>
 <table class="table">
     <tr><th>Name</th><th>Email</th></tr>
@@ -13,7 +17,7 @@
     <%if (payperiod.is_expired)%>
         <p>Pay period has expired. Ask your group leader to calculate all payments. Please make sure you have approved all of your receipts, as your group leader cannot procede unless everyone has.</p>
     <%else%>
-        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.start.strftime("%v")%></p>
+        <p>Active pay period: <%=payperiod.start.strftime("%v")%> to <%=payperiod.end.strftime("%v")%></p>
     <%end%>
 <%else%>
     <p>There is no active pay period. Ask your group leader to start a new pay period so that you can add receipts.</p>
@@ -25,5 +29,7 @@
 <%}%>
 
 <br /><br />
+<%if (group.admin != current_user)%>
 <%=link_to "LEAVE GROUP", "/group/leave?group_id=#{group.id}", { :method => :post, :class=>"btn btn-danger btn-block" }%></td>
+<%end%>
 <br /><br />

@@ -14,7 +14,7 @@
         <%@lines.each { |line| %>
             <tr>
                 <td><%=line.item%></td>
-                <td><%=line.price%></td>
+                <td><%=number_to_currency(line.price)%></td>
             </tr>            
         <%}%>
     </table>
